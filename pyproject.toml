@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "A Claude Code skill that suggests relevant code snippets from your local codebase as you type, using lightweight embeddings to boost productivity."
 requires-python = ">=3.11"
 license = { text = "MIT" }
-dependencies = []
+dependencies = [
+    "numpy>=1.26",
+]
 
 [project.optional-dependencies]
 dev = [
