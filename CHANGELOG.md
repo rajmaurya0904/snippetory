@@ -1,24 +1,12 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-## [0.1.0] - 2024-10-21
+## [0.1.0]
 
 ### Added
-- Initial release of Snippetory.
-- CLI entry point `snippetory` that loads configuration and prints a greeting.
-- Basic configuration handling via `snippetory/config.py`.
-- Tests for CLI, config, and smoke tests.
-
-### Fixed
-- None.
-
-### Changed
-- None.
-
-### Deprecated
-- None.
-
-### Removed
-- None.
-
+- `snippetory index` builds a local embedding index (Python definitions and sliding windows
+  for other languages).
+- `snippetory suggest` ranks snippets by cosine similarity, with `--json`, `--full`,
+  `--min-score`, `-n` and `-p` options.
+- `snippetory stats` and `snippetory clear`.
+- Identifier-aware tokenizer and feature-hashing embedder (numpy only, no model download).
+- Claude Code skill description in `SKILL.md`.
