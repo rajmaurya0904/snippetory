@@ -57,6 +57,7 @@ snippetory clear                   # delete the index
 
 | Command   | Option                | Meaning                                              |
 |-----------|-----------------------|------------------------------------------------------|
+| `index`   | `-x, --exclude GLOB`  | skip files whose relative path matches (repeatable)  |
 | `suggest` | `-n, --num-results N` | number of results (default 5)                        |
 | `suggest` | `-p, --path DIR`      | directory whose index to search (default `.`)        |
 | `suggest` | `--min-score X`       | drop results scoring below X (default 0.05)          |
@@ -82,7 +83,8 @@ Exit codes: `0` success, `1` no results (or no command), `2` error such as a mis
 
 - Lexical, not semantic: it matches shared words and identifier parts, not synonyms.
 - No incremental updates; `snippetory index` rebuilds the whole index.
-- Tests are indexed too and can outrank implementations for generic queries.
+- Tests are indexed too and can outrank implementations for generic queries; use
+  `snippetory index . -x 'tests/*'` to leave them out.
 - Only Python gets definition-aware chunking.
 
 ## Development
