@@ -2,6 +2,7 @@
 
 import ast
 from dataclasses import dataclass
+from fnmatch import fnmatch
 from pathlib import Path
 
 from .config import CHUNK_SIZE, OVERLAP
@@ -84,8 +85,11 @@ def chunk_text(path: str, text: str) -> list[Chunk]:
     return _window_chunks(path, text)
 
 
-def iter_source_files(root: Path):
-    """Yield indexable files under ``root`` in sorted order, skipping vendored dirs."""
+def iter_source_files(root: Path, exclude: tuple[str, ...] = ()):
+    """Yield indexable files under ``root`` in sorted order, skipping vendored dirs.
+
+    ``exclude`` holds glob patterns matched against the posix path relative to ``root``.
+    """
     root = Path(root)
     if root.is_file():
         yield root
@@ -95,6 +99,9 @@ def iter_source_files(root: Path):
             continue
         rel_parts = path.relative_to(root).parts[:-1]
         if any(part in SKIP_DIRS for part in rel_parts):
+            continue
+        rel = path.relative_to(root).as_posix()
+        if any(fnmatch(rel, pat) for pat in exclude):
             continue
         if path.stat().st_size > MAX_FILE_BYTES:
             continue

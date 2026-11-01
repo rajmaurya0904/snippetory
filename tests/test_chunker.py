@@ -75,3 +75,10 @@ def test_chunk_file_skips_binary(tmp_path):
     f = tmp_path / "b.py"
     f.write_bytes(b"\xff\xfe\x00\x80")
     assert chunk_file(f, tmp_path) == []
+
+
+def test_iter_exclude_glob(tmp_path):
+    (tmp_path / "a.py").write_text("x = 1\n")
+    (tmp_path / "b.py").write_text("y = 2\n")
+    names = [p.name for p in iter_source_files(tmp_path, exclude=("b*",))]
+    assert names == ["a.py"]
