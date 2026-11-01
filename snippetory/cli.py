@@ -25,6 +25,15 @@ def _build_parser() -> argparse.ArgumentParser:
         "path", nargs="?", default=".", help="Path to index (default: current directory)"
     )
 
+    p_index.add_argument(
+        "-x",
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="Skip files whose relative path matches GLOB (repeatable, e.g. 'tests/*')",
+    )
+
     p_suggest = sub.add_parser("suggest", help="Suggest snippets based on a query")
     p_suggest.add_argument("query", help="Search query for snippets")
     p_suggest.add_argument(
@@ -51,7 +60,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def _cmd_index(args: argparse.Namespace) -> int:
     try:
-        result = build_index(args.path)
+        result = build_index(args.path, tuple(args.exclude))
     except FileNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

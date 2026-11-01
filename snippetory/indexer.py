@@ -17,7 +17,7 @@ class IndexResult:
     location: Path
 
 
-def build_index(root: Path | str) -> IndexResult:
+def build_index(root: Path | str, exclude: tuple[str, ...] = ()) -> IndexResult:
     """Chunk and embed every source file under ``root`` and save the index inside it."""
     root = Path(root).resolve()
     if not root.exists():
@@ -25,7 +25,7 @@ def build_index(root: Path | str) -> IndexResult:
     base = root.parent if root.is_file() else root
     chunks = []
     files = 0
-    for path in iter_source_files(root):
+    for path in iter_source_files(root, exclude):
         found = chunk_file(path, root)
         if found:
             files += 1

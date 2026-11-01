@@ -126,3 +126,12 @@ def test_reindex_is_stable(project, capsys):
 def test_index_single_file(project, capsys):
     assert main(["index", str(project / "util.py")]) == 0
     assert "Indexed 2 snippets from 1 files" in capsys.readouterr().out
+
+
+def test_index_exclude(project, capsys):
+    (project / "tests").mkdir()
+    (project / "tests" / "test_x.py").write_text("def test_x():\n    assert True\n")
+    assert main(["index", str(project), "-x", "tests/*"]) == 0
+    assert "Indexed 2 snippets from 1 files" in capsys.readouterr().out
+    assert main(["index", str(project)]) == 0
+    assert "Indexed 3 snippets from 2 files" in capsys.readouterr().out
